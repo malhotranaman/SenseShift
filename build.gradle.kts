@@ -1,5 +1,8 @@
 plugins {
     kotlin("jvm") version "2.1.0"
+    id("org.jetbrains.compose") version "1.7.0"
+
+    id("org.jetbrains.kotlin.plugin.compose") version "2.1.20"
 }
 
 group = "org.example"
@@ -7,6 +10,8 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
 }
 
 dependencies {
@@ -22,9 +27,13 @@ dependencies {
 
 
     // build.gradle.kts
-    implementation ("org.tensorflow:libtensorflow:1.15.0")
-    implementation ("org.tensorflow:libtensorflow_jni_gpu:1.15.0")
+    implementation("org.tensorflow:libtensorflow:1.15.0")
+    implementation("org.tensorflow:libtensorflow_jni_gpu:1.15.0")
     implementation("org.tensorflow:tensorflow-core-platform:1.0.0")
+
+    implementation(compose.desktop.currentOs)
+    implementation(compose.material3)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 }
 
 //dependencies {

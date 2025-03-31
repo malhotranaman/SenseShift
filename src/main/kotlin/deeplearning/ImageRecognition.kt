@@ -1,13 +1,11 @@
-import org.jetbrains.kotlinx.dl.api.inference.loaders.TFModelHub
-import org.jetbrains.kotlinx.dl.api.inference.loaders.TFModels
-import org.jetbrains.kotlinx.dl.api.inference.objectdetection.DetectedObject
+package deeplearning
+
 import org.jetbrains.kotlinx.dl.impl.inference.imagerecognition.ImageRecognitionModel
 import org.jetbrains.kotlinx.dl.impl.preprocessing.image.ImageConverter
 import org.jetbrains.kotlinx.dl.onnx.inference.ONNXModelHub
 import org.jetbrains.kotlinx.dl.onnx.inference.ONNXModels
 import org.jetbrains.kotlinx.dl.onnx.inference.executionproviders.ExecutionProvider
 import org.jetbrains.kotlinx.dl.onnx.inference.inferAndCloseUsing
-import org.tensorflow.op.core.Placeholder
 import java.io.File
 
 fun main() {

@@ -1,4 +1,4 @@
-//package org.example
+package deeplearning//package org.example
 //
 //import org.tensorflow.lite.Interpreter
 //
