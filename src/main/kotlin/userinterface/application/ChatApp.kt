@@ -1,8 +1,4 @@
-package org.example.userinterface.control
-// We are so used to doing social media interactions over the internet, sending pictures and recieving them
-// Sometimes the main message we want to spread is not only what we are wearing or doing but the feeling of being in that enviornment with the person you are looking at.
-// Your social media feed is always the same regardless of who you are looking at.
-// What
+package userinterface.application
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
@@ -20,117 +16,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.application
 import kotlinx.coroutines.launch
+import userinterface.colors.AppColors
+import userinterface.colors.NeutralColors
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
 import javax.imageio.ImageIO
-
-// Messages can be either text or images
-sealed class Message {
-    data class TextMessage(val text: String, val isFromUser: Boolean = true) : Message()
-    data class ImageMessage(val image: ImageBitmap, val isFromUser: Boolean = true) : Message()
-}
-
-// Define the app color scheme
-object AppColors {
-    // Primary colors
-    val primary = Color(0xFF8DBEEF) // Pastel blue
-    val onPrimary = Color.White
-    val primaryContainer = Color(0xFFE6F5FF)
-    val onPrimaryContainer = Color(0xFF6B9AC4)
-
-    // Secondary colors
-    val secondary = Color(0xFF9DCFCA)
-    val onSecondary = Color.White
-    val secondaryContainer = Color(0xFFE0F5F2)
-    val onSecondaryContainer = Color(0xFF6BA8A3)
-
-    // Background colors
-    val background = Color(0xFFF0F8FF) // Light pastel blue background
-    val onBackground = Color(0xFF6B8299)
-    val surface = Color.White
-    val onSurface = Color(0xFF6B8299)
-    val surfaceVariant = Color(0xFFF2F9FF)
-
-    // Text field specific colors
-    val textFieldContainer = Color(0xFFEFF8FF)
-    val textFieldFocusedContainer = Color(0xFFE6F5FF)
-    val textFieldIndicator = Color(0xFFAFD6F5)
-    val textFieldFocusedIndicator = Color(0xFF8DBEEF)
-    val textFieldText = Color(0xFF7CACD6)
-    val textFieldFocusedText = Color(0xFF6B9AC4)
-    val textFieldPlaceholder = Color(0xFFBFE1FA)
-    val textFieldFocusedPlaceholder = Color(0xFFAFD6F5)
-
-    // Message colors
-    val userMessageBackground = primary
-    val userMessageText = onPrimary
-    val systemMessageBackground = Color(0xFFE8F4FF)
-    val systemMessageText = Color(0xFF6B9AC4)
-
-    // Border colors
-    val border = Color(0xFFAFD6F5)
-
-    // Create Material ColorScheme from our custom colors
-    fun toMaterialColorScheme() = ColorScheme(
-        primary = primary,
-        onPrimary = onPrimary,
-        primaryContainer = primaryContainer,
-        onPrimaryContainer = onPrimaryContainer,
-        secondary = secondary,
-        onSecondary = onSecondary,
-        secondaryContainer = secondaryContainer,
-        onSecondaryContainer = onSecondaryContainer,
-        tertiary = Color(0xFFB8A7E8),
-        onTertiary = Color.White,
-        tertiaryContainer = Color(0xFFF0E8FF),
-        onTertiaryContainer = Color(0xFF9381C9),
-        error = Color(0xFFF5A8A8),
-        onError = Color.White,
-        errorContainer = Color(0xFFFDECEF),
-        onErrorContainer = Color(0xFFD48585),
-        background = background,
-        onBackground = onBackground,
-        surface = surface,
-        onSurface = onSurface,
-        surfaceVariant = surfaceVariant,
-        onSurfaceVariant = Color(0xFF93B4D1),
-        outline = Color(0xFFAFD6F5),
-        outlineVariant = Color(0xFFCFE7FA),
-        scrim = Color(0x99D8EEFF),
-        inverseSurface = Color(0xFF6B9AC4),
-        inverseOnSurface = Color.White,
-        inversePrimary = Color(0xFFD4E9FA),
-        surfaceTint = primary,
-        surfaceBright = Color.White,
-        surfaceContainer = Color(0xFFF5FBFF),
-        surfaceContainerHigh = Color(0xFFEAF6FF),
-        surfaceContainerHighest = Color(0xFFDFEFFA),
-        surfaceContainerLow = Color(0xFFFAFDFF),
-        surfaceContainerLowest = Color.White,
-        surfaceDim = Color(0xFFF0F8FF),
-    )
-}
-
-// The main application
-fun main() = application {
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "Chat App"
-    ) {
-        ChatApp()
-    }
-}
 
 // The main chat interface
 @Composable
@@ -141,10 +38,20 @@ fun ChatApp() {
     var selectedImage by remember { mutableStateOf<ImageBitmap?>(null) }
     val scrollState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    var AppColors = NeutralColors();
+
+    // Add a refresh state to trigger UI updates
+    var refreshTrigger by remember { mutableStateOf(0) }
+
+    // Function to refresh the UI that can be called from anywhere in the composable
+    fun refreshUI() {
+        refreshTrigger += 1  // Incrementing this value will cause recomposition
+    }
+
 
     // Initial welcome message
     LaunchedEffect(Unit) {
-        messages.add(Message.TextMessage("Welcome to the chat! Please upload an image.", false))
+        messages.add(Message.TextMessage("Send a text or image message.", false))
     }
 
     MaterialTheme(
@@ -162,7 +69,7 @@ fun ChatApp() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Chat",
+                    text = "SenseShift",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = AppColors.onBackground
@@ -182,7 +89,7 @@ fun ChatApp() {
                 state = scrollState
             ) {
                 items(messages) { message ->
-                    MessageItem(message)
+                    MessageItem(message, AppColors)
                 }
             }
 
@@ -280,6 +187,9 @@ fun ChatApp() {
                             // Add image message to chat
                             messages.add(Message.ImageMessage(selectedImage!!))
 
+                            // TODO working with the selected Image
+
+
                             // Reset the selected image
                             selectedImage = null
 
@@ -309,9 +219,10 @@ fun ChatApp() {
     }
 }
 
+
 // Component for individual message items
 @Composable
-fun MessageItem(message: Message) {
+fun MessageItem(message: Message, AppColors: AppColors) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -346,6 +257,7 @@ fun MessageItem(message: Message) {
                     )
                 }
             }
+
             is Message.ImageMessage -> {
                 Box(
                     modifier = Modifier
@@ -361,4 +273,11 @@ fun MessageItem(message: Message) {
             }
         }
     }
+}
+
+
+// Messages can be either text or images
+sealed class Message {
+    data class TextMessage(val text: String, val isFromUser: Boolean = true) : Message()
+    data class ImageMessage(val image: ImageBitmap, val isFromUser: Boolean = true) : Message()
 }
