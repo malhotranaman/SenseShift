@@ -21,6 +21,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlin-deeplearning-tensorflow:0.5.2")
     implementation("org.jetbrains.kotlinx:kotlin-deeplearning-onnx:0.5.2")
     implementation("org.jetbrains.kotlinx:kotlin-deeplearning-visualization:0.5.2")
+    implementation("org.jetbrains.kotlinx:kotlin-deeplearning-dataset:0.5.2")
     implementation("org.apache.logging.log4j:log4j-api:2.14.1")
     implementation("org.apache.logging.log4j:log4j-core:2.17.1")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1")

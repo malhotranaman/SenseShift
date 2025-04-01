@@ -178,3 +178,76 @@ fun exportTrainingData(
     println("- ${featuresFile.absolutePath}")
     println("- ${labelsFile.absolutePath}")
 }
+
+fun predictEmotions(colors: List<Color>, objectsDetected: List<DetectedObject>): ClassifierOutput {
+    // Initialize training data generator
+    val dataGenerator = TrainingDataGenerator()
+    val objectCategories = dataGenerator.getObjectCategories()
+    val objectAttributes = dataGenerator.getObjectAttributes()
+
+    // Initialize feature extractor
+    val featureExtractor = FeatureExtractor(
+        objectCategories = objectCategories,
+        objectAttributes = objectAttributes
+    )
+
+    // Initialize classifier model
+    val classifier = EmotionClassifier(
+        objectCategories = objectCategories,
+        objectAttributes = objectAttributes,
+        featureExtractor = featureExtractor
+    )
+
+    try {
+        val modelFile = File("/Users/namanmalhotra/IdeaProjects/MoodRelate/src/main/python/emotion_classifier_model.onnx")
+        if (modelFile.exists()) {
+            println("Loading existing ONNX model...")
+            classifier.loadModel()
+        } else {
+            throw Exception("ONNX Model is not found!")
+        }
+
+        val colorParts = colors.fold("") { acc: String, color: Color -> acc + "${color.name},${color.red},${color.green},${color.blue}" }.split(",")
+        val mainColor = if (colorParts.size == 4) {
+            try {
+                Color(
+                    name = colorParts[0].trim(),
+                    red = colorParts[1].trim().toInt(),
+                    green = colorParts[2].trim().toInt(),
+                    blue = colorParts[3].trim().toInt()
+                )
+            } catch (e: Exception) {
+                println("Invalid color format. Using default.")
+                Color("white", 255, 255, 255)
+            }
+        } else {
+            println("Invalid color format. Using default.")
+            Color("white", 255, 255, 255)
+        }
+
+        val objects = objectsDetected
+            .filter { it.label?.isNotBlank() ?: false }
+
+        // Create input for prediction
+        val input = ClassifierInput(
+            mainColor = mainColor,
+            objects = objects
+        )
+
+        return classifier.predict(input)
+
+//        println("\nPredicted Emotion: ${prediction.predictedEmotion}")
+//        println("Confidence Scores:")
+//        prediction.confidenceScores
+//            .toList()
+//            .sortedByDescending { it.second }
+//            .take(3)
+//            .forEach { (emotion, score) ->
+//                println("  ${emotion.name}: ${score * 100}%")
+//            }
+
+    } finally {
+        // Clean up resources
+        classifier.close()
+    }
+}

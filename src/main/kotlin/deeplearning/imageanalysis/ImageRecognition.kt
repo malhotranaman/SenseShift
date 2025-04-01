@@ -13,11 +13,10 @@ import kotlin.math.abs
 fun detectAndHighlightObjects(fileToHighlight: File): Pair<File, List<DetectedObject>> {
     try {
         // Change extension to match format
-        val outfile = File("kotlin/resources/objecthighlighted/".plus(fileToHighlight.absolutePath.split("/").last()))
+        val outfile = File("/Users/namanmalhotra/IdeaProjects/MoodRelate/src/main/kotlin/resources/objecthighlighted/".plus(fileToHighlight.absolutePath.split("/").last()))
 
         val recognizer = ImageRecognition(fileToHighlight)
         val imageAndObjects = recognizer.visualise()
-
 
         val success = ImageIO.write(imageAndObjects.first, "jpg", outfile)
 

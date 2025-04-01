@@ -22,8 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import org.example.userinterface.control.deeplearning.pipeline.ImageProcess
+import org.example.userinterface.control.userinterface.colors.AngryColors
 import org.example.userinterface.control.userinterface.colors.SadColors
 import userinterface.colors.AppColors
+import userinterface.colors.NeutralColors
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
@@ -39,7 +42,7 @@ fun ChatApp() {
     var selectedFileOuter by remember { mutableStateOf<File?>(null) }
     val scrollState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    var AppColors = SadColors();
+    var AppColors: AppColors = NeutralColors();
 
     // Add a refresh state to trigger UI updates
     var refreshTrigger by remember { mutableStateOf(0) }
@@ -190,13 +193,17 @@ fun ChatApp() {
                             messages.add(Message.ImageMessage(selectedImage!!))
 
                             // TODO working with the selected Image
-                            //val imageProcessing: ImageProcess = ImageProcess(selectedFileOuter!!)
+                            val imageProcessing: Triple<AppColors, String, File> = ImageProcess(selectedFileOuter!!).getPrediction()
+                            messages.add(Message.TextMessage("Image processed successfully!", false))
+                            messages.add(Message.TextMessage("Sending the highlighted image", false))
+                            messages.add(Message.ImageMessage(ImageIO.read(imageProcessing.third).toComposeImageBitmap(), false))
+                            messages.add(Message.TextMessage(imageProcessing.second, false))
+
+                            AppColors = imageProcessing.first
+                            //AppColors = AngryColors();
 
                             // Reset the selected image
                             selectedImage = null
-
-                            // Add a confirmation message
-                            messages.add(Message.TextMessage("Image sent successfully!", false))
                         } else if (inputText.value.isNotEmpty()) {
                             // Add text message
                             messages.add(Message.TextMessage(inputText.value))
@@ -264,12 +271,21 @@ fun MessageItem(message: Message, AppColors: AppColors) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
-                        .border(1.dp, AppColors.border, RoundedCornerShape(12.dp))
+                        .border(1.dp, AppColors.border, RoundedCornerShape(12.dp)),
+                    contentAlignment = if (!message.isFromUser)
+                        Alignment.CenterStart else Alignment.CenterEnd
                 ) {
                     Image(
                         bitmap = message.image,
                         contentDescription = "Message Image",
-                        modifier = Modifier.size(200.dp)
+                        modifier = Modifier.size(200.dp).clip(
+                            RoundedCornerShape(
+                                topStart = 16.dp,
+                                topEnd = 16.dp,
+                                bottomStart = if (message.isFromUser) 16.dp else 4.dp,
+                                bottomEnd = if (message.isFromUser) 4.dp else 16.dp
+                            )
+                        ),
                     )
                 }
             }
