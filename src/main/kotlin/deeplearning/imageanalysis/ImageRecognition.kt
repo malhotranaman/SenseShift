@@ -1,4 +1,4 @@
-package deeplearning
+package org.example.userinterface.control.deeplearning.imageanalysis
 
 import org.jetbrains.kotlinx.dl.api.inference.objectdetection.DetectedObject
 import org.jetbrains.kotlinx.dl.onnx.inference.ONNXModelHub
@@ -10,28 +10,29 @@ import javax.imageio.ImageIO
 import javax.swing.JFrame
 import kotlin.math.abs
 
-
-fun main() {
+fun detectAndHighlightObjects(fileToHighlight: File): Pair<File, List<DetectedObject>> {
     try {
         // Change extension to match format
-        val outfile = File("/Users/namanmalhotra/IdeaProjects/MoodRelate/src/main/kotlin/resource/image.jpg")
+        val outfile = File("kotlin/resources/objecthighlighted/".plus(fileToHighlight.absolutePath.split("/").last()))
 
-        val recognizer = ImageRecognition(File("/Users/namanmalhotra/IdeaProjects/MoodRelate/src/main/kotlin/resource/image1.jpg"))
-        val image = recognizer.visualise()
+        val recognizer = ImageRecognition(fileToHighlight)
+        val imageAndObjects = recognizer.visualise()
 
-        // Verify image dimensions
-        println("Image dimensions: ${image.width} x ${image.height}")
 
-        val success = ImageIO.write(image, "jpg", outfile)
+        val success = ImageIO.write(imageAndObjects.first, "jpg", outfile)
 
         if (success) {
             println("Image saved successfully to ${outfile.absolutePath}")
         } else {
             println("Failed to save image - no appropriate writer found")
         }
+
+        return (outfile to imageAndObjects.second)
     } catch (e: Exception) {
         e.printStackTrace()
     }
+
+    throw Exception("Unreachable-Code")
 }
 
 class ImageRecognition(
@@ -107,13 +108,14 @@ class ImageRecognition(
         }
     }
 
-    fun visualise(): BufferedImage {
+    fun visualise(): Pair<BufferedImage, List<DetectedObject>> {
         val frame = JFrame("Detected Objects")
+        val detectedObjects: List<DetectedObject> = detectObjects()
         @Suppress("UNCHECKED_CAST")
-        frame.contentPane.add(JPanel(targetFile, detectObjects()))
+        frame.contentPane.add(JPanel(targetFile, detectedObjects))
         frame.pack()
         frame.setLocationRelativeTo(null)
-        return createImage(frame)
+        return (createImage(frame) to detectedObjects)
     }
 
     private fun createImage(frame: JFrame): BufferedImage {

@@ -22,8 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import org.example.userinterface.control.userinterface.colors.SadColors
 import userinterface.colors.AppColors
-import userinterface.colors.NeutralColors
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
@@ -36,9 +36,10 @@ fun ChatApp() {
     val messages = remember { mutableStateListOf<Message>() }
     val inputText = remember { mutableStateOf("") }
     var selectedImage by remember { mutableStateOf<ImageBitmap?>(null) }
+    var selectedFileOuter by remember { mutableStateOf<File?>(null) }
     val scrollState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    var AppColors = NeutralColors();
+    var AppColors = SadColors();
 
     // Add a refresh state to trigger UI updates
     var refreshTrigger by remember { mutableStateOf(0) }
@@ -157,10 +158,11 @@ fun ChatApp() {
                         val file = fileDialog.file
 
                         if (directory != null && file != null) {
-                            val selectedFile = File(directory, file)
+                            var selectedFile = File(directory, file)
                             try {
                                 val bufferedImage = ImageIO.read(selectedFile)
                                 selectedImage = bufferedImage.toComposeImageBitmap()
+                                selectedFileOuter = selectedFile;
                             } catch (e: Exception) {
                                 println("Error loading image: ${e.message}")
                             }
@@ -188,12 +190,12 @@ fun ChatApp() {
                             messages.add(Message.ImageMessage(selectedImage!!))
 
                             // TODO working with the selected Image
-
+                            //val imageProcessing: ImageProcess = ImageProcess(selectedFileOuter!!)
 
                             // Reset the selected image
                             selectedImage = null
 
-                            // Add confirmation message
+                            // Add a confirmation message
                             messages.add(Message.TextMessage("Image sent successfully!", false))
                         } else if (inputText.value.isNotEmpty()) {
                             // Add text message
