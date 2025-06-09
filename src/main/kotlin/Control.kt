@@ -8,13 +8,13 @@ import androidx.compose.ui.window.application
 import userinterface.application.ChatApp
 
 // The main application
-fun main() = application {
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "SenseShift",
-        focusable = true,
-
-    ) {
-        ChatApp()
+fun main() =
+    application {
+        Window(
+            onCloseRequest = ::exitApplication,
+            title = "SenseShift",
+            focusable = true,
+        ) {
+            ChatApp()
+        }
     }
-}

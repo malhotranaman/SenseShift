@@ -10,11 +10,11 @@ class FeatureExtractor(
     private val objectAttributes: List<String>,
     private val vocabularySize: Int = 1000,
     private val maxObjects: Int = 5,
-    private val maxColors: Int = 3
+    private val maxColors: Int = 3,
 ) {
     // Vocabulary indices for words in object names, attributes, etc.
     private val wordToIndex = mutableMapOf<String, Int>()
-    private var nextIndex = 1  // 0 is reserved for padding
+    private var nextIndex = 1 // 0 is reserved for padding
 
     /**
      * Extract features from classifier input
@@ -28,9 +28,10 @@ class FeatureExtractor(
         features.addAll(extractColorFeatures(input.mainColor))
 
         // Extract secondary colors (up to maxColors)
-        val secondaryColorsFeatures = input.secondaryColors
-            .take(maxColors - 1)
-            .flatMap { extractColorFeatures(it) }
+        val secondaryColorsFeatures =
+            input.secondaryColors
+                .take(maxColors - 1)
+                .flatMap { extractColorFeatures(it) }
 
         // Pad if we have fewer than max secondary colors
         val colorPadding = (maxColors - 1 - input.secondaryColors.size).coerceAtLeast(0)
@@ -38,9 +39,10 @@ class FeatureExtractor(
         features.addAll(List(colorPadding * 3) { 0f })
 
         // Extract object features (up to maxObjects)
-        val objectFeatures = input.objects
-            .take(maxObjects)
-            .flatMap { extractObjectFeatures(it) }
+        val objectFeatures =
+            input.objects
+                .take(maxObjects)
+                .flatMap { extractObjectFeatures(it) }
 
         // Pad if we have fewer than max objects
         val objectsPadding = (maxObjects - input.objects.size).coerceAtLeast(0)
@@ -67,14 +69,16 @@ class FeatureExtractor(
      */
     private fun extractObjectFeatures(obj: DetectedObject): List<Float> {
         // One-hot encode category
-        val categoryFeatures = objectCategories.map { category ->
-            if (obj.label?.equals(category, ignoreCase = true) == true) 1f else 0f
-        }
+        val categoryFeatures =
+            objectCategories.map { category ->
+                if (obj.label?.equals(category, ignoreCase = true) == true) 1f else 0f
+            }
 
         // One-hot encode attributes
-        val attributeFeatures = objectAttributes.map { attr ->
-            if (obj.label?.lowercase()?.contains(attr.lowercase()) == true) 1f else 0f
-        }
+        val attributeFeatures =
+            objectAttributes.map { attr ->
+                if (obj.label?.lowercase()?.contains(attr.lowercase()) == true) 1f else 0f
+            }
 
         return categoryFeatures + attributeFeatures
     }
@@ -84,11 +88,10 @@ class FeatureExtractor(
      * @param word The word to get index for
      * @return The index in the vocabulary
      */
-    private fun getWordIndex(word: String): Int {
-        return wordToIndex.getOrPut(word.lowercase()) {
+    private fun getWordIndex(word: String): Int =
+        wordToIndex.getOrPut(word.lowercase()) {
             if (nextIndex < vocabularySize) nextIndex++ else 0
         }
-    }
 
     /**
      * Get the input shape for the ONNX model
@@ -96,7 +99,7 @@ class FeatureExtractor(
      */
     fun getInputShape(): LongArray {
         // Calculate total feature size
-        val colorFeaturesSize = 3 * maxColors  // RGB for each color
+        val colorFeaturesSize = 3 * maxColors // RGB for each color
         val objectFeaturesSize = maxObjects * (objectCategories.size + objectAttributes.size)
         val totalFeatures = colorFeaturesSize + objectFeaturesSize
 

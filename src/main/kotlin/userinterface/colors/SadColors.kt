@@ -8,7 +8,7 @@ import userinterface.colors.AppColors
  * Somber, desaturated colors with deep blues and muted grays
  * to express sadness, melancholy, and introspection
  */
-class SadColors: AppColors {
+class SadColors : AppColors {
     // Primary colors
     override val primary = Color(0xFF455A64) // Deep blue-gray
     override val onPrimary = Color.White
@@ -48,42 +48,43 @@ class SadColors: AppColors {
     override val border = Color(0xFFB0BEC5)
 
     // Create Material ColorScheme from our custom colors
-    override fun toMaterialColorScheme() = ColorScheme(
-        primary = primary,
-        onPrimary = onPrimary,
-        primaryContainer = primaryContainer,
-        onPrimaryContainer = onPrimaryContainer,
-        secondary = secondary,
-        onSecondary = onSecondary,
-        secondaryContainer = secondaryContainer,
-        onSecondaryContainer = onSecondaryContainer,
-        tertiary = Color(0xFF78909C), // Mid blue-gray for tertiary
-        onTertiary = Color.White,
-        tertiaryContainer = Color(0xFFECEFF1),
-        onTertiaryContainer = Color(0xFF263238),
-        error = Color(0xFF9E9E9E), // Gray for errors - less intensity
-        onError = Color.White,
-        errorContainer = Color(0xFFEEEEEE),
-        onErrorContainer = Color(0xFF424242),
-        background = background,
-        onBackground = onBackground,
-        surface = surface,
-        onSurface = onSurface,
-        surfaceVariant = surfaceVariant,
-        onSurfaceVariant = Color(0xFF455A64),
-        outline = Color(0xFFB0BEC5),
-        outlineVariant = Color(0xFFCFD8DC),
-        scrim = Color(0x99E0E0E0),
-        inverseSurface = Color(0xFF263238),
-        inverseOnSurface = Color.White,
-        inversePrimary = Color(0xFFCFD8DC),
-        surfaceTint = primary,
-        surfaceBright = Color(0xFFFCFDFD),
-        surfaceContainer = Color(0xFFE8EBED),
-        surfaceContainerHigh = Color(0xFFDFE3E6),
-        surfaceContainerHighest = Color(0xFFD6DCE0),
-        surfaceContainerLow = Color(0xFFF0F3F4),
-        surfaceContainerLowest = Color(0xFFF9FAFB),
-        surfaceDim = Color(0xFFF0F3F4),
-    )
+    override fun toMaterialColorScheme() =
+        ColorScheme(
+            primary = primary,
+            onPrimary = onPrimary,
+            primaryContainer = primaryContainer,
+            onPrimaryContainer = onPrimaryContainer,
+            secondary = secondary,
+            onSecondary = onSecondary,
+            secondaryContainer = secondaryContainer,
+            onSecondaryContainer = onSecondaryContainer,
+            tertiary = Color(0xFF78909C), // Mid blue-gray for tertiary
+            onTertiary = Color.White,
+            tertiaryContainer = Color(0xFFECEFF1),
+            onTertiaryContainer = Color(0xFF263238),
+            error = Color(0xFF9E9E9E), // Gray for errors - less intensity
+            onError = Color.White,
+            errorContainer = Color(0xFFEEEEEE),
+            onErrorContainer = Color(0xFF424242),
+            background = background,
+            onBackground = onBackground,
+            surface = surface,
+            onSurface = onSurface,
+            surfaceVariant = surfaceVariant,
+            onSurfaceVariant = Color(0xFF455A64),
+            outline = Color(0xFFB0BEC5),
+            outlineVariant = Color(0xFFCFD8DC),
+            scrim = Color(0x99E0E0E0),
+            inverseSurface = Color(0xFF263238),
+            inverseOnSurface = Color.White,
+            inversePrimary = Color(0xFFCFD8DC),
+            surfaceTint = primary,
+            surfaceBright = Color(0xFFFCFDFD),
+            surfaceContainer = Color(0xFFE8EBED),
+            surfaceContainerHigh = Color(0xFFDFE3E6),
+            surfaceContainerHighest = Color(0xFFD6DCE0),
+            surfaceContainerLow = Color(0xFFF0F3F4),
+            surfaceContainerLowest = Color(0xFFF9FAFB),
+            surfaceDim = Color(0xFFF0F3F4),
+        )
 }

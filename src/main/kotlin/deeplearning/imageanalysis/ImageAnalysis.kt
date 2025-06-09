@@ -1,37 +1,38 @@
 package org.example.userinterface.control.deeplearning.imageanalysis
 
 import org.example.userinterface.control.deeplearning.emotionclassifier.Color
-import java.io.File
 import java.awt.image.BufferedImage
+import java.io.File
 import javax.imageio.ImageIO
 import kotlin.math.sqrt
 
 /**
  * Named common colors for reference
  */
-private val COMMON_COLORS = listOf(
-    Color("Red", 255, 0, 0),
-    Color("Green", 0, 255, 0),
-    Color("Blue", 0, 0, 255),
-    Color("Yellow", 255, 255, 0),
-    Color("Cyan", 0, 255, 255),
-    Color("Magenta", 255, 0, 255),
-    Color("White", 255, 255, 255),
-    Color("Black", 0, 0, 0),
-    Color("Gray", 128, 128, 128),
-    Color("Orange", 255, 165, 0),
-    Color("Purple", 128, 0, 128),
-    Color("Brown", 165, 42, 42),
-    Color("Pink", 255, 192, 203),
-    Color("Olive", 128, 128, 0),
-    Color("Navy", 0, 0, 128),
-    Color("Teal", 0, 128, 128),
-    Color("Maroon", 128, 0, 0),
-    Color("Lime", 0, 255, 0),
-    Color("Turquoise", 64, 224, 208),
-    Color("Lavender", 230, 230, 250),
-    Color("Beige", 245, 245, 220)
-)
+private val COMMON_COLORS =
+    listOf(
+        Color("Red", 255, 0, 0),
+        Color("Green", 0, 255, 0),
+        Color("Blue", 0, 0, 255),
+        Color("Yellow", 255, 255, 0),
+        Color("Cyan", 0, 255, 255),
+        Color("Magenta", 255, 0, 255),
+        Color("White", 255, 255, 255),
+        Color("Black", 0, 0, 0),
+        Color("Gray", 128, 128, 128),
+        Color("Orange", 255, 165, 0),
+        Color("Purple", 128, 0, 128),
+        Color("Brown", 165, 42, 42),
+        Color("Pink", 255, 192, 203),
+        Color("Olive", 128, 128, 0),
+        Color("Navy", 0, 0, 128),
+        Color("Teal", 0, 128, 128),
+        Color("Maroon", 128, 0, 0),
+        Color("Lime", 0, 255, 0),
+        Color("Turquoise", 64, 224, 208),
+        Color("Lavender", 230, 230, 250),
+        Color("Beige", 245, 245, 220),
+    )
 
 /**
  * Analyzes an image file and extracts the main colors using k-means clustering
@@ -39,7 +40,10 @@ private val COMMON_COLORS = listOf(
  * @param numColors The number of main colors to extract (default: 5)
  * @return List of Color objects representing the dominant colors in the image
  */
-fun mainColorsInImage(selectedImage: File, numColors: Int = 5): List<Color> {
+fun mainColorsInImage(
+    selectedImage: File,
+    numColors: Int = 5,
+): List<Color> {
     // Load image using standard Java/Kotlin image handling
     val originalImage = ImageIO.read(selectedImage)
 
@@ -74,7 +78,11 @@ fun mainColorsInImage(selectedImage: File, numColors: Int = 5): List<Color> {
  * @param height Target height
  * @return Resized BufferedImage
  */
-private fun resizeImage(image: BufferedImage, width: Int, height: Int): BufferedImage {
+private fun resizeImage(
+    image: BufferedImage,
+    width: Int,
+    height: Int,
+): BufferedImage {
     val resized = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     val g = resized.createGraphics()
     g.drawImage(image, 0, 0, width, height, null)
@@ -88,7 +96,10 @@ private fun resizeImage(image: BufferedImage, width: Int, height: Int): Buffered
  * @param k Number of clusters (colors) to find
  * @return List of IntArray with RGB values for each dominant color
  */
-private fun kMeansClustering(pixels: List<IntArray>, k: Int): List<IntArray> {
+private fun kMeansClustering(
+    pixels: List<IntArray>,
+    k: Int,
+): List<IntArray> {
     if (pixels.isEmpty()) return emptyList()
 
     // Initialize centroids randomly
@@ -189,15 +200,24 @@ private fun kMeansClustering(pixels: List<IntArray>, k: Int): List<IntArray> {
  * @param b Blue component (0-255)
  * @return Name of the closest color
  */
-private fun findClosestColorName(r: Int, g: Int, b: Int): String {
+private fun findClosestColorName(
+    r: Int,
+    g: Int,
+    b: Int,
+): String {
     var closestColor = COMMON_COLORS.first()
     var closestDistance = Double.MAX_VALUE
 
     for (color in COMMON_COLORS) {
-        val distance = colorDistanceSquared(
-            r, g, b,
-            color.red, color.green, color.blue
-        )
+        val distance =
+            colorDistanceSquared(
+                r,
+                g,
+                b,
+                color.red,
+                color.green,
+                color.blue,
+            )
 
         if (distance < closestDistance) {
             closestDistance = distance
@@ -207,11 +227,12 @@ private fun findClosestColorName(r: Int, g: Int, b: Int): String {
 
     // If it's a shade, add descriptor
     val brightness = (r + g + b) / 3
-    val prefix = when {
-        brightness < 64 -> "Dark "
-        brightness > 220 -> "Light "
-        else -> ""
-    }
+    val prefix =
+        when {
+            brightness < 64 -> "Dark "
+            brightness > 220 -> "Light "
+            else -> ""
+        }
 
     return if (prefix.isNotEmpty() && closestColor.name != "Black" && closestColor.name != "White") {
         "$prefix${closestColor.name}"
@@ -223,14 +244,22 @@ private fun findClosestColorName(r: Int, g: Int, b: Int): String {
 /**
  * Calculate Euclidean distance between two colors in RGB space
  */
-private fun colorDistance(c1: IntArray, c2: IntArray): Double {
-    return sqrt(colorDistanceSquared(c1[0], c1[1], c1[2], c2[0], c2[1], c2[2]))
-}
+private fun colorDistance(
+    c1: IntArray,
+    c2: IntArray,
+): Double = sqrt(colorDistanceSquared(c1[0], c1[1], c1[2], c2[0], c2[1], c2[2]))
 
 /**
  * Calculate squared Euclidean distance between two colors in RGB space
  */
-private fun colorDistanceSquared(r1: Int, g1: Int, b1: Int, r2: Int, g2: Int, b2: Int): Double {
+private fun colorDistanceSquared(
+    r1: Int,
+    g1: Int,
+    b1: Int,
+    r2: Int,
+    g2: Int,
+    b2: Int,
+): Double {
     val dr = r1 - r2
     val dg = g1 - g2
     val db = b1 - b2

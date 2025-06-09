@@ -8,7 +8,7 @@ import userinterface.colors.AppColors
  * Bright, cheerful colors with sunny yellows and warm oranges
  * to evoke feelings of joy and optimism
  */
-class HappyColors: AppColors {
+class HappyColors : AppColors {
     // Primary colors
     override val primary = Color(0xFFFFC107) // Bright yellow
     override val onPrimary = Color(0xFF333333) // Dark text for contrast
@@ -48,42 +48,43 @@ class HappyColors: AppColors {
     override val border = Color(0xFFFFD54F)
 
     // Create Material ColorScheme from our custom colors
-    override fun toMaterialColorScheme() = ColorScheme(
-        primary = primary,
-        onPrimary = onPrimary,
-        primaryContainer = primaryContainer,
-        onPrimaryContainer = onPrimaryContainer,
-        secondary = secondary,
-        onSecondary = onSecondary,
-        secondaryContainer = secondaryContainer,
-        onSecondaryContainer = onSecondaryContainer,
-        tertiary = Color(0xFF4CAF50), // Green accent
-        onTertiary = Color.White,
-        tertiaryContainer = Color(0xFFC8E6C9),
-        onTertiaryContainer = Color(0xFF1B5E20),
-        error = Color(0xFFE57373),
-        onError = Color.White,
-        errorContainer = Color(0xFFFFEBEE),
-        onErrorContainer = Color(0xFFB71C1C),
-        background = background,
-        onBackground = onBackground,
-        surface = surface,
-        onSurface = onSurface,
-        surfaceVariant = surfaceVariant,
-        onSurfaceVariant = Color(0xFF8C6D00),
-        outline = Color(0xFFFFD54F),
-        outlineVariant = Color(0xFFFFE0B2),
-        scrim = Color(0x99FFF8E1),
-        inverseSurface = Color(0xFF5D4037),
-        inverseOnSurface = Color.White,
-        inversePrimary = Color(0xFFFFECB3),
-        surfaceTint = primary,
-        surfaceBright = Color.White,
-        surfaceContainer = Color(0xFFFFF8E1),
-        surfaceContainerHigh = Color(0xFFFFF8D6),
-        surfaceContainerHighest = Color(0xFFFFF5CC),
-        surfaceContainerLow = Color(0xFFFFFBEB),
-        surfaceContainerLowest = Color.White,
-        surfaceDim = Color(0xFFFFFBE6),
-    )
+    override fun toMaterialColorScheme() =
+        ColorScheme(
+            primary = primary,
+            onPrimary = onPrimary,
+            primaryContainer = primaryContainer,
+            onPrimaryContainer = onPrimaryContainer,
+            secondary = secondary,
+            onSecondary = onSecondary,
+            secondaryContainer = secondaryContainer,
+            onSecondaryContainer = onSecondaryContainer,
+            tertiary = Color(0xFF4CAF50), // Green accent
+            onTertiary = Color.White,
+            tertiaryContainer = Color(0xFFC8E6C9),
+            onTertiaryContainer = Color(0xFF1B5E20),
+            error = Color(0xFFE57373),
+            onError = Color.White,
+            errorContainer = Color(0xFFFFEBEE),
+            onErrorContainer = Color(0xFFB71C1C),
+            background = background,
+            onBackground = onBackground,
+            surface = surface,
+            onSurface = onSurface,
+            surfaceVariant = surfaceVariant,
+            onSurfaceVariant = Color(0xFF8C6D00),
+            outline = Color(0xFFFFD54F),
+            outlineVariant = Color(0xFFFFE0B2),
+            scrim = Color(0x99FFF8E1),
+            inverseSurface = Color(0xFF5D4037),
+            inverseOnSurface = Color.White,
+            inversePrimary = Color(0xFFFFECB3),
+            surfaceTint = primary,
+            surfaceBright = Color.White,
+            surfaceContainer = Color(0xFFFFF8E1),
+            surfaceContainerHigh = Color(0xFFFFF8D6),
+            surfaceContainerHighest = Color(0xFFFFF5CC),
+            surfaceContainerLow = Color(0xFFFFFBEB),
+            surfaceContainerLowest = Color.White,
+            surfaceDim = Color(0xFFFFFBE6),
+        )
 }

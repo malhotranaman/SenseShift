@@ -15,7 +15,7 @@ class EmotionClassifier(
     private val objectCategories: List<String>,
     private val objectAttributes: List<String>,
     private val featureExtractor: FeatureExtractor,
-    private val modelSavePath: String = "/Users/namanmalhotra/IdeaProjects/MoodRelate/src/main/python/emotion_classifier_model.onnx"
+    private val modelSavePath: String = "/Users/namanmalhotra/IdeaProjects/MoodRelate/src/main/python/emotion_classifier_model.onnx",
 ) {
     // ONNX Runtime environment and session
     private val ortEnvironment: OrtEnvironment = OrtEnvironment.getEnvironment()
@@ -37,13 +37,12 @@ class EmotionClassifier(
     /**
      * Creates a session options object with optimization settings
      */
-    private fun createSessionOptions(): OrtSession.SessionOptions {
-        return OrtSession.SessionOptions().apply {
+    private fun createSessionOptions(): OrtSession.SessionOptions =
+        OrtSession.SessionOptions().apply {
             setOptimizationLevel(OrtSession.SessionOptions.OptLevel.BASIC_OPT)
             setInterOpNumThreads(1)
             setIntraOpNumThreads(1)
         }
-    }
 
     /**
      * Load a pre-trained ONNX model from file
@@ -58,10 +57,11 @@ class EmotionClassifier(
         session?.close()
 
         // Create new session with the model
-        session = ortEnvironment.createSession(
-            modelFile.absolutePath,
-            createSessionOptions()
-        )
+        session =
+            ortEnvironment.createSession(
+                modelFile.absolutePath,
+                createSessionOptions(),
+            )
 
         println("ONNX model loaded successfully from $modelSavePath")
     }
@@ -75,7 +75,7 @@ class EmotionClassifier(
         inputs: List<ClassifierInput>,
         labels: List<Emotion>,
         epochs: Int = 20,
-        batchSize: Int = 32
+        batchSize: Int = 32,
     ) {
         println("Training in ONNX implementation needs to be done in a separate framework like PyTorch or TensorFlow")
         println("and then exported to ONNX format.")
@@ -128,9 +128,10 @@ class EmotionClassifier(
                     val predictedEmotion = Emotion.entries[maxIndex]
 
                     // Create confidence scores map
-                    val confidenceScores = Emotion.entries.associateWith { emotion ->
-                        probabilities[emotion.ordinal]
-                    }
+                    val confidenceScores =
+                        Emotion.entries.associateWith { emotion ->
+                            probabilities[emotion.ordinal]
+                        }
 
                     return ClassifierOutput(predictedEmotion, confidenceScores)
                 }

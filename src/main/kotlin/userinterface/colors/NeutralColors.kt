@@ -3,7 +3,7 @@ package userinterface.colors
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 
-class NeutralColors: AppColors {
+class NeutralColors : AppColors {
     // Primary colors
     override val primary = Color(0xFF8DBEEF) // Pastel blue
     override val onPrimary = Color.White
@@ -43,42 +43,43 @@ class NeutralColors: AppColors {
     override val border = Color(0xFFAFD6F5)
 
     // Create Material ColorScheme from our custom colors
-    override fun toMaterialColorScheme() = ColorScheme(
-        primary = primary,
-        onPrimary = onPrimary,
-        primaryContainer = primaryContainer,
-        onPrimaryContainer = onPrimaryContainer,
-        secondary = secondary,
-        onSecondary = onSecondary,
-        secondaryContainer = secondaryContainer,
-        onSecondaryContainer = onSecondaryContainer,
-        tertiary = Color(0xFFB8A7E8),
-        onTertiary = Color.White,
-        tertiaryContainer = Color(0xFFF0E8FF),
-        onTertiaryContainer = Color(0xFF9381C9),
-        error = Color(0xFFF5A8A8),
-        onError = Color.White,
-        errorContainer = Color(0xFFFDECEF),
-        onErrorContainer = Color(0xFFD48585),
-        background = background,
-        onBackground = onBackground,
-        surface = surface,
-        onSurface = onSurface,
-        surfaceVariant = surfaceVariant,
-        onSurfaceVariant = Color(0xFF93B4D1),
-        outline = Color(0xFFAFD6F5),
-        outlineVariant = Color(0xFFCFE7FA),
-        scrim = Color(0x99D8EEFF),
-        inverseSurface = Color(0xFF6B9AC4),
-        inverseOnSurface = Color.White,
-        inversePrimary = Color(0xFFD4E9FA),
-        surfaceTint = primary,
-        surfaceBright = Color.White,
-        surfaceContainer = Color(0xFFF5FBFF),
-        surfaceContainerHigh = Color(0xFFEAF6FF),
-        surfaceContainerHighest = Color(0xFFDFEFFA),
-        surfaceContainerLow = Color(0xFFFAFDFF),
-        surfaceContainerLowest = Color.White,
-        surfaceDim = Color(0xFFF0F8FF),
-    )
+    override fun toMaterialColorScheme() =
+        ColorScheme(
+            primary = primary,
+            onPrimary = onPrimary,
+            primaryContainer = primaryContainer,
+            onPrimaryContainer = onPrimaryContainer,
+            secondary = secondary,
+            onSecondary = onSecondary,
+            secondaryContainer = secondaryContainer,
+            onSecondaryContainer = onSecondaryContainer,
+            tertiary = Color(0xFFB8A7E8),
+            onTertiary = Color.White,
+            tertiaryContainer = Color(0xFFF0E8FF),
+            onTertiaryContainer = Color(0xFF9381C9),
+            error = Color(0xFFF5A8A8),
+            onError = Color.White,
+            errorContainer = Color(0xFFFDECEF),
+            onErrorContainer = Color(0xFFD48585),
+            background = background,
+            onBackground = onBackground,
+            surface = surface,
+            onSurface = onSurface,
+            surfaceVariant = surfaceVariant,
+            onSurfaceVariant = Color(0xFF93B4D1),
+            outline = Color(0xFFAFD6F5),
+            outlineVariant = Color(0xFFCFE7FA),
+            scrim = Color(0x99D8EEFF),
+            inverseSurface = Color(0xFF6B9AC4),
+            inverseOnSurface = Color.White,
+            inversePrimary = Color(0xFFD4E9FA),
+            surfaceTint = primary,
+            surfaceBright = Color.White,
+            surfaceContainer = Color(0xFFF5FBFF),
+            surfaceContainerHigh = Color(0xFFEAF6FF),
+            surfaceContainerHighest = Color(0xFFDFEFFA),
+            surfaceContainerLow = Color(0xFFFAFDFF),
+            surfaceContainerLowest = Color.White,
+            surfaceDim = Color(0xFFF0F8FF),
+        )
 }

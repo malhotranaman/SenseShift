@@ -1,6 +1,7 @@
 package org.example.userinterface.control.deeplearning.imageanalysis
 
 import org.jetbrains.kotlinx.dl.api.inference.objectdetection.DetectedObject
+import org.jetbrains.kotlinx.dl.api.inference.posedetection.DetectedPose
 import org.jetbrains.kotlinx.dl.onnx.inference.ONNXModelHub
 import org.jetbrains.kotlinx.dl.onnx.inference.ONNXModels
 import java.awt.*
@@ -10,10 +11,15 @@ import javax.imageio.ImageIO
 import javax.swing.JFrame
 import kotlin.math.abs
 
-fun detectAndHighlightObjects(fileToHighlight: File): Pair<File, List<DetectedObject>> {
+fun detectAndHighlightObjects(fileToHighlight: File): Triple<File, List<DetectedObject>, DetectedPose> {
     try {
         // Change extension to match format
-        val outfile = File("/Users/namanmalhotra/IdeaProjects/MoodRelate/src/main/kotlin/resources/objecthighlighted/".plus(fileToHighlight.absolutePath.split("/").last()))
+        val outfile =
+            File(
+                "/Users/namanmalhotra/IdeaProjects/MoodRelate/src/main/kotlin/resources/objecthighlighted/".plus(
+                    fileToHighlight.absolutePath.split("/").last(),
+                ),
+            )
 
         val recognizer = ImageRecognition(fileToHighlight)
         val imageAndObjects = recognizer.visualise()
@@ -26,7 +32,7 @@ fun detectAndHighlightObjects(fileToHighlight: File): Pair<File, List<DetectedOb
             println("Failed to save image - no appropriate writer found")
         }
 
-        return (outfile to imageAndObjects.second)
+        return Triple(outfile, imageAndObjects.second, recognizer.detectPoses())
     } catch (e: Exception) {
         e.printStackTrace()
     }
@@ -37,7 +43,6 @@ fun detectAndHighlightObjects(fileToHighlight: File): Pair<File, List<DetectedOb
 class ImageRecognition(
     private val targetFile: File,
 ) {
-
     private fun detectObjects(): List<DetectedObject> {
         val modelHub = ONNXModelHub(cacheDirectory = File("cache/pretrainedModels"))
 
@@ -57,9 +62,24 @@ class ImageRecognition(
         }
     }
 
+    fun detectPoses(): DetectedPose {
+        val modelHub = ONNXModelHub(cacheDirectory = File("cache/pretrainedModels"))
+
+        val model = modelHub.loadPretrainedModel(ONNXModels.PoseDetection.MoveNetSinglePoseLighting)
+
+        model.use { detectionModel ->
+            println(detectionModel)
+
+            val imageFile = targetFile
+            val detectedPose = detectionModel.detectPose(imageFile = imageFile)
+
+            return detectedPose;
+        }
+    }
+
     class JPanel(
         image: File,
-        private val detectedObjects: List<DetectedObject>
+        private val detectedObjects: List<DetectedObject>,
     ) : javax.swing.JPanel() {
         private var bufferedImage = ImageIO.read(image)
 
@@ -98,13 +118,9 @@ class ImageRecognition(
             }
         }
 
-        override fun getPreferredSize(): Dimension {
-            return Dimension(bufferedImage.width, bufferedImage.height)
-        }
+        override fun getPreferredSize(): Dimension = Dimension(bufferedImage.width, bufferedImage.height)
 
-        override fun getMinimumSize(): Dimension {
-            return Dimension(bufferedImage.width, bufferedImage.height)
-        }
+        override fun getMinimumSize(): Dimension = Dimension(bufferedImage.width, bufferedImage.height)
     }
 
     fun visualise(): Pair<BufferedImage, List<DetectedObject>> {
@@ -125,7 +141,7 @@ class ImageRecognition(
         val h = contentPane.height
 
         if (w <= 0 || h <= 0) {
-            throw IllegalStateException("Invalid frame dimensions: ${w}x${h}")
+            throw IllegalStateException("Invalid frame dimensions: ${w}x$h")
         }
 
         val bi = BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)

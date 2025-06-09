@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import org.example.userinterface.control.deeplearning.pipeline.ImageProcess
 import org.example.userinterface.control.userinterface.colors.AngryColors
-import org.example.userinterface.control.userinterface.colors.SadColors
 import userinterface.colors.AppColors
 import userinterface.colors.NeutralColors
 import java.awt.FileDialog
@@ -42,16 +41,15 @@ fun ChatApp() {
     var selectedFileOuter by remember { mutableStateOf<File?>(null) }
     val scrollState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    var AppColors: AppColors = NeutralColors();
+    var AppColors: AppColors = NeutralColors()
 
     // Add a refresh state to trigger UI updates
     var refreshTrigger by remember { mutableStateOf(0) }
 
     // Function to refresh the UI that can be called from anywhere in the composable
     fun refreshUI() {
-        refreshTrigger += 1  // Incrementing this value will cause recomposition
+        refreshTrigger += 1 // Incrementing this value will cause recomposition
     }
-
 
     // Initial welcome message
     LaunchedEffect(Unit) {
@@ -59,38 +57,39 @@ fun ChatApp() {
     }
 
     MaterialTheme(
-        colorScheme = AppColors.toMaterialColorScheme()
+        colorScheme = AppColors.toMaterialColorScheme(),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(AppColors.background)
-                .padding(16.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(AppColors.background)
+                    .padding(16.dp),
         ) {
             // App bar
             Row(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "SenseShift",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
-                    color = AppColors.onBackground
+                    color = AppColors.onBackground,
                 )
             }
 
             // Chat messages
             LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .background(
-                        color = AppColors.surfaceVariant,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .padding(8.dp),
-                state = scrollState
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .background(
+                            color = AppColors.surfaceVariant,
+                            shape = RoundedCornerShape(8.dp),
+                        ).padding(8.dp),
+                state = scrollState,
             ) {
                 items(messages) { message ->
                     MessageItem(message, AppColors)
@@ -100,27 +99,29 @@ fun ChatApp() {
             // If image is selected, show preview
             selectedImage?.let { image ->
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    contentAlignment = Alignment.CenterEnd
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                    contentAlignment = Alignment.CenterEnd,
                 ) {
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Image(
                             bitmap = image,
                             contentDescription = "Selected Image",
-                            modifier = Modifier
-                                .size(120.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                                .border(1.dp, AppColors.border, RoundedCornerShape(8.dp))
+                            modifier =
+                                Modifier
+                                    .size(120.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .border(1.dp, AppColors.border, RoundedCornerShape(8.dp)),
                         )
                         Text(
                             "Image selected - click OK to send",
                             fontSize = 12.sp,
                             color = AppColors.onBackground,
-                            modifier = Modifier.padding(top = 4.dp)
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                 }
@@ -129,24 +130,25 @@ fun ChatApp() {
             // Input area - always visible
             Row(
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 TextField(
                     value = inputText.value,
                     onValueChange = { inputText.value = it },
                     placeholder = { Text("Type a message...") },
                     modifier = Modifier.weight(1f),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = AppColors.textFieldFocusedContainer,
-                        unfocusedContainerColor = AppColors.textFieldContainer,
-                        disabledContainerColor = AppColors.textFieldContainer,
-                        focusedIndicatorColor = AppColors.textFieldFocusedIndicator,
-                        unfocusedIndicatorColor = AppColors.textFieldIndicator,
-                        focusedTextColor = AppColors.textFieldFocusedText,
-                        unfocusedTextColor = AppColors.textFieldText,
-                        focusedPlaceholderColor = AppColors.textFieldFocusedPlaceholder,
-                        unfocusedPlaceholderColor = AppColors.textFieldPlaceholder
-                    )
+                    colors =
+                        TextFieldDefaults.colors(
+                            focusedContainerColor = AppColors.textFieldFocusedContainer,
+                            unfocusedContainerColor = AppColors.textFieldContainer,
+                            disabledContainerColor = AppColors.textFieldContainer,
+                            focusedIndicatorColor = AppColors.textFieldFocusedIndicator,
+                            unfocusedIndicatorColor = AppColors.textFieldIndicator,
+                            focusedTextColor = AppColors.textFieldFocusedText,
+                            unfocusedTextColor = AppColors.textFieldText,
+                            focusedPlaceholderColor = AppColors.textFieldFocusedPlaceholder,
+                            unfocusedPlaceholderColor = AppColors.textFieldPlaceholder,
+                        ),
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -165,21 +167,22 @@ fun ChatApp() {
                             try {
                                 val bufferedImage = ImageIO.read(selectedFile)
                                 selectedImage = bufferedImage.toComposeImageBitmap()
-                                selectedFileOuter = selectedFile;
+                                selectedFileOuter = selectedFile
                             } catch (e: Exception) {
                                 println("Error loading image: ${e.message}")
                             }
                         }
                     },
                     contentPadding = PaddingValues(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = AppColors.primary,
-                        contentColor = AppColors.onPrimary
-                    )
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = AppColors.primary,
+                            contentColor = AppColors.onPrimary,
+                        ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Upload Image"
+                        contentDescription = "Upload Image",
                     )
                 }
 
@@ -189,7 +192,7 @@ fun ChatApp() {
                 Button(
                     onClick = {
                         if (selectedImage != null) {
-                            // Add image message to chat
+                            // Add the image message to chat
                             messages.add(Message.ImageMessage(selectedImage!!))
 
                             // TODO working with the selected Image
@@ -200,12 +203,12 @@ fun ChatApp() {
                             messages.add(Message.TextMessage(imageProcessing.second, false))
 
                             AppColors = imageProcessing.first
-                            //AppColors = AngryColors();
+                            //AppColors = AngryColors()
 
                             // Reset the selected image
                             selectedImage = null
                         } else if (inputText.value.isNotEmpty()) {
-                            // Add text message
+                            // Add text-message
                             messages.add(Message.TextMessage(inputText.value))
                             inputText.value = ""
                         }
@@ -216,10 +219,11 @@ fun ChatApp() {
                         }
                     },
                     contentPadding = PaddingValues(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = AppColors.primary,
-                        contentColor = AppColors.onPrimary
-                    )
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = AppColors.primary,
+                            contentColor = AppColors.onPrimary,
+                        ),
                 ) {
                     Text("OK")
                 }
@@ -228,64 +232,85 @@ fun ChatApp() {
     }
 }
 
-
 // Component for individual message items
 @Composable
-fun MessageItem(message: Message, AppColors: AppColors) {
+fun MessageItem(
+    message: Message,
+    AppColors: AppColors,
+) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        contentAlignment = if (message is Message.TextMessage && !message.isFromUser)
-            Alignment.CenterStart else Alignment.CenterEnd
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+        contentAlignment =
+            if (message is Message.TextMessage && !message.isFromUser) {
+                Alignment.CenterStart
+            } else {
+                Alignment.CenterEnd
+            },
     ) {
         when (message) {
             is Message.TextMessage -> {
-                val backgroundColor = if (message.isFromUser)
-                    AppColors.userMessageBackground else AppColors.systemMessageBackground
-                val textColor = if (message.isFromUser)
-                    AppColors.userMessageText else AppColors.systemMessageText
+                val backgroundColor =
+                    if (message.isFromUser) {
+                        AppColors.userMessageBackground
+                    } else {
+                        AppColors.systemMessageBackground
+                    }
+                val textColor =
+                    if (message.isFromUser) {
+                        AppColors.userMessageText
+                    } else {
+                        AppColors.systemMessageText
+                    }
 
                 Box(
-                    modifier = Modifier
-                        .clip(
-                            RoundedCornerShape(
-                                topStart = 16.dp,
-                                topEnd = 16.dp,
-                                bottomStart = if (message.isFromUser) 16.dp else 4.dp,
-                                bottomEnd = if (message.isFromUser) 4.dp else 16.dp
-                            )
-                        )
-                        .background(backgroundColor)
-                        .padding(12.dp)
+                    modifier =
+                        Modifier
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = 16.dp,
+                                    topEnd = 16.dp,
+                                    bottomStart = if (message.isFromUser) 16.dp else 4.dp,
+                                    bottomEnd = if (message.isFromUser) 4.dp else 16.dp,
+                                ),
+                            ).background(backgroundColor)
+                            .padding(12.dp),
                 ) {
                     Text(
                         text = message.text,
                         color = textColor,
-                        fontSize = 16.sp
+                        fontSize = 16.sp,
                     )
                 }
             }
 
             is Message.ImageMessage -> {
                 Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .border(1.dp, AppColors.border, RoundedCornerShape(12.dp)),
-                    contentAlignment = if (!message.isFromUser)
-                        Alignment.CenterStart else Alignment.CenterEnd
+                    modifier =
+                        Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .border(1.dp, AppColors.border, RoundedCornerShape(12.dp)),
+                    contentAlignment =
+                        if (!message.isFromUser) {
+                            Alignment.CenterStart
+                        } else {
+                            Alignment.CenterEnd
+                        },
                 ) {
                     Image(
                         bitmap = message.image,
                         contentDescription = "Message Image",
-                        modifier = Modifier.size(200.dp).clip(
-                            RoundedCornerShape(
-                                topStart = 16.dp,
-                                topEnd = 16.dp,
-                                bottomStart = if (message.isFromUser) 16.dp else 4.dp,
-                                bottomEnd = if (message.isFromUser) 4.dp else 16.dp
-                            )
-                        ),
+                        modifier =
+                            Modifier.size(200.dp).clip(
+                                RoundedCornerShape(
+                                    topStart = 16.dp,
+                                    topEnd = 16.dp,
+                                    bottomStart = if (message.isFromUser) 16.dp else 4.dp,
+                                    bottomEnd = if (message.isFromUser) 4.dp else 16.dp,
+                                ),
+                            ),
                     )
                 }
             }
@@ -293,9 +318,15 @@ fun MessageItem(message: Message, AppColors: AppColors) {
     }
 }
 
-
 // Messages can be either text or images
 sealed class Message {
-    data class TextMessage(val text: String, val isFromUser: Boolean = true) : Message()
-    data class ImageMessage(val image: ImageBitmap, val isFromUser: Boolean = true) : Message()
+    data class TextMessage(
+        val text: String,
+        val isFromUser: Boolean = true,
+    ) : Message()
+
+    data class ImageMessage(
+        val image: ImageBitmap,
+        val isFromUser: Boolean = true,
+    ) : Message()
 }

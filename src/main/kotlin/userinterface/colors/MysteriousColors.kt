@@ -8,7 +8,7 @@ import userinterface.colors.AppColors
  * Enigmatic, atmospheric colors with deep purples and midnight blues
  * to create a sense of mystery, wonder and depth
  */
-class MysteriousColors: AppColors {
+class MysteriousColors : AppColors {
     // Primary colors
     override val primary = Color(0xFF4527A0) // Deep purple
     override val onPrimary = Color.White
@@ -48,42 +48,43 @@ class MysteriousColors: AppColors {
     override val border = Color(0xFF9575CD)
 
     // Create Material ColorScheme from our custom colors
-    override fun toMaterialColorScheme() = ColorScheme(
-        primary = primary,
-        onPrimary = onPrimary,
-        primaryContainer = primaryContainer,
-        onPrimaryContainer = onPrimaryContainer,
-        secondary = secondary,
-        onSecondary = onSecondary,
-        secondaryContainer = secondaryContainer,
-        onSecondaryContainer = onSecondaryContainer,
-        tertiary = Color(0xFF512DA8), // Another purple shade
-        onTertiary = Color.White,
-        tertiaryContainer = Color(0xFFD1C4E9),
-        onTertiaryContainer = Color(0xFF311B92),
-        error = Color(0xFF7986CB), // Using indigo for errors - more mysterious
-        onError = Color.White,
-        errorContainer = Color(0xFFE8EAF6),
-        onErrorContainer = Color(0xFF1A237E),
-        background = background,
-        onBackground = onBackground,
-        surface = surface,
-        onSurface = onSurface,
-        surfaceVariant = surfaceVariant,
-        onSurfaceVariant = Color(0xFF4527A0),
-        outline = Color(0xFF9575CD),
-        outlineVariant = Color(0xFFD1C4E9),
-        scrim = Color(0x99EDE7F6),
-        inverseSurface = Color(0xFF1A1042),
-        inverseOnSurface = Color.White,
-        inversePrimary = Color(0xFFD1C4E9),
-        surfaceTint = primary,
-        surfaceBright = Color.White,
-        surfaceContainer = Color(0xFFEDE7F6),
-        surfaceContainerHigh = Color(0xFFE4DEF1),
-        surfaceContainerHighest = Color(0xFFD9D0E8),
-        surfaceContainerLow = Color(0xFFF5F3FA),
-        surfaceContainerLowest = Color(0xFFFEFBFF),
-        surfaceDim = Color(0xFFF5F3FA),
-    )
+    override fun toMaterialColorScheme() =
+        ColorScheme(
+            primary = primary,
+            onPrimary = onPrimary,
+            primaryContainer = primaryContainer,
+            onPrimaryContainer = onPrimaryContainer,
+            secondary = secondary,
+            onSecondary = onSecondary,
+            secondaryContainer = secondaryContainer,
+            onSecondaryContainer = onSecondaryContainer,
+            tertiary = Color(0xFF512DA8), // Another purple shade
+            onTertiary = Color.White,
+            tertiaryContainer = Color(0xFFD1C4E9),
+            onTertiaryContainer = Color(0xFF311B92),
+            error = Color(0xFF7986CB), // Using indigo for errors - more mysterious
+            onError = Color.White,
+            errorContainer = Color(0xFFE8EAF6),
+            onErrorContainer = Color(0xFF1A237E),
+            background = background,
+            onBackground = onBackground,
+            surface = surface,
+            onSurface = onSurface,
+            surfaceVariant = surfaceVariant,
+            onSurfaceVariant = Color(0xFF4527A0),
+            outline = Color(0xFF9575CD),
+            outlineVariant = Color(0xFFD1C4E9),
+            scrim = Color(0x99EDE7F6),
+            inverseSurface = Color(0xFF1A1042),
+            inverseOnSurface = Color.White,
+            inversePrimary = Color(0xFFD1C4E9),
+            surfaceTint = primary,
+            surfaceBright = Color.White,
+            surfaceContainer = Color(0xFFEDE7F6),
+            surfaceContainerHigh = Color(0xFFE4DEF1),
+            surfaceContainerHighest = Color(0xFFD9D0E8),
+            surfaceContainerLow = Color(0xFFF5F3FA),
+            surfaceContainerLowest = Color(0xFFFEFBFF),
+            surfaceDim = Color(0xFFF5F3FA),
+        )
 }
